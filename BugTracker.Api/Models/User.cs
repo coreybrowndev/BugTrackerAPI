@@ -10,6 +10,6 @@ public class User : BaseEntity
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public UserRole Role { get; set; }  // Admin Developer QA PM
-    public ICollection<Bug>? AssignedBugs { get; set; }
-    public ICollection<Project>? Projects { get; set; }
+    public ICollection<Bug> AssignedBugs { get; set; } = new List<Bug>();
+    public ICollection<Project> Projects { get; set; } = new List<Project>();
 }
