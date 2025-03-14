@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Api", "BugTracker.Api\BugTracker.Api.csproj", "{D2F28F2D-5092-4541-9CD6-5A9102EA9D4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker.Api.Tests", "BugTracker.Api.Tests\BugTracker.Api.Tests.csproj", "{439D8109-785D-460C-A727-47EF0FA6CD04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2F28F2D-5092-4541-9CD6-5A9102EA9D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F28F2D-5092-4541-9CD6-5A9102EA9D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F28F2D-5092-4541-9CD6-5A9102EA9D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F28F2D-5092-4541-9CD6-5A9102EA9D4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{439D8109-785D-460C-A727-47EF0FA6CD04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439D8109-785D-460C-A727-47EF0FA6CD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439D8109-785D-460C-A727-47EF0FA6CD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{439D8109-785D-460C-A727-47EF0FA6CD04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
