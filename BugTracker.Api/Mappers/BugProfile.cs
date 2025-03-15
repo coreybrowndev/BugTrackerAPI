@@ -8,7 +8,6 @@ public class BugProfile : Profile
 {
     public BugProfile()
     {
-        CreateMap<Bug, BugDto>();
-        CreateMap<BugDto, Bug>().ReverseMap();
+        CreateMap<Bug, BugDto>().ReverseMap();
     }
 }

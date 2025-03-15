@@ -8,7 +8,6 @@ public class ProjectProfile : Profile
 {
     public ProjectProfile()
     {
-        CreateMap<Project, ProjectDto>();
-        CreateMap<ProjectDto, Project>().ReverseMap();
+        CreateMap<Project, ProjectDto>().ReverseMap();
     }
 }
