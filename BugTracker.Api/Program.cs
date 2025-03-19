@@ -1,6 +1,8 @@
 using System.Text;
 using BugTracker.Api.Contracts.Data;
 using BugTracker.Api.Database;
+using BugTracker.Api.Middleware;
+using BugTracker.Api.Middleware.ExceptionConfig;
 using BugTracker.Api.Models;
 using BugTracker.Api.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,6 +46,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseRouting();
 app.MapControllers();

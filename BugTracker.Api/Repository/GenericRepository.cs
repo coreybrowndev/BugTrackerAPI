@@ -22,6 +22,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<T> UpdateAsync(T entity)
     {
+        var updatedAtProperty = entity.GetType().GetProperty("UpdatedAt");
+        updatedAtProperty?.SetValue(entity, DateTime.UtcNow);
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
         return entity;

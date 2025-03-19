@@ -46,7 +46,7 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
 
-    [HttpGet("/email/{email}")]
+    [HttpGet("email/{email}")]
     public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
     {
         // get user by email
@@ -59,7 +59,7 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
 
-    [HttpGet("/details/{id}")]
+    [HttpGet("details/{id}")]
     public async Task<ActionResult<UserDetailsDto>> GetUserDetails(int id)
     {
         // get user by id
@@ -72,7 +72,7 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
 
-    [HttpGet("/projects/{id}")]
+    [HttpGet("projects/{id}")]
     public async Task<ActionResult<IEnumerable<ProjectDto>>> GetUserProjects(int id)
     {
         // get projects by user id
@@ -97,7 +97,7 @@ public class UserController : ControllerBase
         //map to created
         var userDto = _mapper.Map<UserDto>(newEntity);
 
-        return CreatedAtAction(nameof(GetUser), new { id = newEntity.Id });
+        return CreatedAtAction(nameof(GetUser), new { id = newEntity.Id }, userDto);
     }
 
     [HttpPut("{id}")]
@@ -123,7 +123,7 @@ public class UserController : ControllerBase
             {
                 throw new NotFoundException("User", id);
             }
-            
+            Console.WriteLine(ex.Message);
             throw;
         }
     }
