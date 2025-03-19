@@ -1,6 +1,8 @@
 using System.Text;
+using BugTracker.Api.Contracts.Data;
 using BugTracker.Api.Database;
 using BugTracker.Api.Models;
+using BugTracker.Api.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +15,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddJsonOptions(options => 
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
+builder.Services.Configure<RouteOptions>(options => 
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 // Add the database context to the services container
 var connectionString = builder.Configuration["BugTracker:DefaultConnection"];
@@ -30,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+app.UseRouting();
+app.MapControllers();
 
 app.Run();

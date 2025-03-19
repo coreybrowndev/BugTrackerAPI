@@ -1,5 +1,5 @@
+using BugTracker.Api.Models.DomainModels;
 namespace BugTracker.Api.Contracts.Data;
-using BugTracker.Api.Models;
 public interface IProjectRepository : IGenericRepository<Project>
 {
     Task<Project> GetProjectByIdAsync(int id);

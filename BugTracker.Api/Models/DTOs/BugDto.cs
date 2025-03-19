@@ -1,6 +1,5 @@
 using BugTracker.Api.Models.Enum;
-
-namespace BugTracker.Api.Models.DTO;
+namespace BugTracker.Api.Models.DTOs;
 
 //<summary>
 //Data Transfer Object for Bug

@@ -1,6 +1,7 @@
+using BugTracker.Api.Models.DomainModels;
 namespace BugTracker.Api.Contracts.Data;
-using BugTracker.Api.Models;
 public interface IUserRepository : IGenericRepository<User>
-{
-    
+{   
+    Task<User?> GetUserByEmailAsync(string email);
+    Task<User?> GetDetails(int id);
 }

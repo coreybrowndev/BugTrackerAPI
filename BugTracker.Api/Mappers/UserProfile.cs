@@ -1,6 +1,6 @@
 using AutoMapper;
-using BugTracker.Api.Models;
-using BugTracker.Api.Models.DTO;
+using BugTracker.Api.Models.DomainModels;
+using BugTracker.Api.Models.DTOs;
 
 namespace BugTracker.Api.Mappers;
 

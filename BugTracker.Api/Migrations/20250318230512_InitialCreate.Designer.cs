@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Api.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    [Migration("20250315231258_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250318230512_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace BugTracker.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("BugTracker.Api.Models.Bug", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.Bug", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,30 +33,35 @@ namespace BugTracker.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssignedToId")
+                    b.Property<int?>("AssignedToId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("ReporterId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -65,10 +70,12 @@ namespace BugTracker.Api.Migrations
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("ReporterId");
+
                     b.ToTable("Bugs");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.Project", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +83,7 @@ namespace BugTracker.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
@@ -87,17 +94,30 @@ namespace BugTracker.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.User", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUsers");
+                });
+
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,8 +125,12 @@ namespace BugTracker.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -120,51 +144,73 @@ namespace BugTracker.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("passwordHash")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.Bug", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.Bug", b =>
                 {
-                    b.HasOne("BugTracker.Api.Models.User", "AssignedTo")
+                    b.HasOne("BugTracker.Api.Models.DomainModels.User", "AssignedTo")
                         .WithMany("AssignedBugs")
                         .HasForeignKey("AssignedToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("BugTracker.Api.Models.Project", "Project")
+                    b.HasOne("BugTracker.Api.Models.DomainModels.Project", "Project")
                         .WithMany("Bugs")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BugTracker.Api.Models.DomainModels.User", "Reporter")
+                        .WithMany("ReportedBugs")
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AssignedTo");
 
                     b.Navigation("Project");
+
+                    b.Navigation("Reporter");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.Project", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.ProjectUser", b =>
                 {
-                    b.HasOne("BugTracker.Api.Models.User", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("UserId");
+                    b.HasOne("BugTracker.Api.Models.DomainModels.Project", "Project")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Api.Models.DomainModels.User", "User")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.Project", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.Project", b =>
                 {
                     b.Navigation("Bugs");
+
+                    b.Navigation("ProjectUsers");
                 });
 
-            modelBuilder.Entity("BugTracker.Api.Models.User", b =>
+            modelBuilder.Entity("BugTracker.Api.Models.DomainModels.User", b =>
                 {
                     b.Navigation("AssignedBugs");
 
-                    b.Navigation("Projects");
+                    b.Navigation("ProjectUsers");
+
+                    b.Navigation("ReportedBugs");
                 });
 #pragma warning restore 612, 618
         }
