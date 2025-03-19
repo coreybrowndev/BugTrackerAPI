@@ -72,6 +72,19 @@ public class UserController : ControllerBase
         return Ok(userDto);
     }
 
+    [HttpGet("/projects/{id}")]
+    public async Task<ActionResult<IEnumerable<ProjectDto>>> GetUserProjects(int id)
+    {
+        // get projects by user id
+        var projects = await _userRepository.GetProjects(id);
+
+        // map projects
+        var projectDtos = _mapper.Map<IEnumerable<ProjectDto>>(projects);
+
+        // return response
+        return Ok(projectDtos);
+    }
+
     [HttpPost]
     public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto newUser)
     {

@@ -36,5 +36,13 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     }
 
     // possible method to get the user with the projects they are assigned to
+    public async Task<IEnumerable<Project>> GetProjects(int userId)
+    {
+        return await _context.ProjectUsers
+        .Include(pu => pu.Project)
+        .Where(pu => pu.UserId == userId)
+        .Select(pu => pu.Project)
+        .ToListAsync();
+    }
 }
 

@@ -5,7 +5,9 @@ using BugTracker.Api.Models.Enum;
 namespace BugTracker.Api.Models.DomainModels;
 public class Bug : BaseEntity
 {
+    [Required]
     public string Title { get; set; } = string.Empty;
+    [Required]
     public string Description { get; set; } = string.Empty;
     public BugStatus Status { get; set; } // Open, In Progress, Resolved, Closed
     public BugPriority Priority { get; set; } // Low, Medium, High, Critical
